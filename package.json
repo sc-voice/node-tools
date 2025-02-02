@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "test": "mocha --config test/mocha-config-all.json",
-    "test:test": "mocha --config test/mocha-config.json --recursive"
+    "test:test": "mocha --config test/mocha-config.json "
   },
   "repository": {
     "type": "git",

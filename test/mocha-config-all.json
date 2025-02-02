@@ -1,9 +1,7 @@
 {
-  "reporter": "min",
   "extension": ".mjs",
   "inline-diffs": true,
   "recursive": true,
   "parallel": true,
-  "node-option": ["no-warnings=ExperimentalWarning"],
   "watch-ignore": ["node_modules", ".git", "local"]
 }

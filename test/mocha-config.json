@@ -3,6 +3,7 @@
   "extension": "mjs",
   "inline-diffs": true,
   "grep": ["TESTTEST"],
+  "recursive": true,
   "watch": true,
   "parallel": true,
   "node-option": ["no-warnings=ExperimentalWarning"],
