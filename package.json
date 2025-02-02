@@ -1,0 +1,44 @@
+{
+  "name": "@sc-voice/node-tools",
+  "version": "1.0.0",
+  "description": "NodeJS Utilities for SC-Voice",
+  "main": "index.mjs",
+  "files": [
+    "LICENSE",
+    "index.mjs",
+    "package.json",
+    "README.md",
+    "src"
+  ],
+  "scripts": {
+    "test": "mocha --config test/mocha-config-all.json",
+    "test:test": "mocha --config test/mocha-config.json --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sc-voice/node-tools.git"
+  },
+  "keywords": [
+    "SC-Voice tools",
+    "nodejs",
+    "memo-again",
+    "Javascript"
+  ],
+  "author": "Karl Lew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sc-voice/node-tools/issues"
+  },
+  "homepage": "https://github.com/sc-voice/node-tools#readme",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "eslint": "^9.17.0",
+    "mocha": "^11.0.1",
+    "should": "^13.2.3"
+  },
+  "dependencies": {
+    "@sc-voice/tools": "^1.5.0",
+    "deepl-node": "^1.16.0",
+    "merkle-json": "^2.7.0"
+  }
+}

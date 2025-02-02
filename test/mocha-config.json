@@ -1,0 +1,10 @@
+{
+  "reporter": "min",
+  "extension": "mjs",
+  "inline-diffs": true,
+  "grep": ["TESTTEST"],
+  "watch": true,
+  "parallel": true,
+  "node-option": ["no-warnings=ExperimentalWarning"],
+  "watch-ignore": ["node_modules", ".git", "local"]
+}
