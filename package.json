@@ -1,6 +1,6 @@
 {
   "name": "@sc-voice/node-tools",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "NodeJS Utilities for SC-Voice",
   "main": "index.mjs",
   "files": [
