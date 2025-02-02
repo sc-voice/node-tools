@@ -38,7 +38,6 @@
   },
   "dependencies": {
     "@sc-voice/tools": "^1.5.0",
-    "deepl-node": "^1.16.0",
-    "merkle-json": "^2.7.0"
+    "deepl-node": "^1.16.0"
   }
 }
