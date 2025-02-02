@@ -1,9 +1,7 @@
+import { ScvMath, Text } from '@sc-voice/tools';
 import { DBG } from '../defines.mjs';
-import { Text, ScvMath } from '@sc-voice/tools';
-const { 
-  Fraction 
-} = ScvMath;
-const { 
+const { Fraction } = ScvMath;
+const {
   EbtDoc,
   LegacyDoc,
   SuttaCentralId,

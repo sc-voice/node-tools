@@ -1,12 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import should from 'should';
-import { ScvMath, Text, Translate } from '@sc-voice/tools';
+
+import { ScvMath, Text } from '@sc-voice/tools';
 const { Fraction } = ScvMath;
 const { EbtDoc, LegacyDoc, WordSpace } = Text;
+const { Vector } = WordSpace;
+
+import { Translate } from '../../index.mjs';
 const { Aligner, Alignment, AlignmentStatus } = Translate;
 import { DBG } from '../../src/defines.mjs';
-const { Vector } = WordSpace;
 const { dirname: TEST_DIR, filename: TEST_FILE } = import.meta;
 const TEST_DATA = path.join(TEST_DIR, '../data');
 

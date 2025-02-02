@@ -37,7 +37,7 @@
     "should": "^13.2.3"
   },
   "dependencies": {
-    "@sc-voice/tools": "^1.5.0",
+    "@sc-voice/tools": "^2.0.0",
     "deepl-node": "^1.16.0"
   }
 }
