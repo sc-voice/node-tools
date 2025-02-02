@@ -1,2 +1,2 @@
 # Node Tools
-Javascript library for SC-Voice applications
+Javascript NodeJS library for SC-Voice applications
