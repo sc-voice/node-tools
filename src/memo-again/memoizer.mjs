@@ -1,14 +1,17 @@
-const { MerkleJson } = require('merkle-json');
-const MemoCache = require('./memo-cache');
+import { Text } from '@sc-voice/tools';
+const { MerkleJson } = Text;
+import { MemoCache } from './memo-cache.mjs';
 
 export class Memoizer {
   constructor(opts = {}) {
+    let { logger = console, context = 'global' } = opts;
     this.mj = new MerkleJson();
-    this.context = opts.context || 'global';
+    this.context = context;
+    this.logger = logger;
     this.cache =
       opts.cache ||
       new MemoCache({
-        logger: this,
+        logger,
         storeName: opts.storeName,
         storePath: opts.storePath,
         writeMem: opts.writeMem,
@@ -56,11 +59,12 @@ export class Memoizer {
 
   async clearMemo(method, context) {
     const msg = 'm6r.clearMemo:';
+    let { logger } = this;
     try {
       let volume = this.volumeOf(method, context);
       await this.cache.clearVolume(volume);
     } catch (e) {
-      console.error(
+      logger.error(
         msg,
         JSON.stringify({ method, context }),
         e.message,

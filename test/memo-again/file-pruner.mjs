@@ -1,11 +1,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import should from 'should';
 import { Text } from '@sc-voice/tools';
+import should from 'should';
 const { Logger } = Text;
 import { MemoAgain } from '../../index.mjs';
 const { dirname: __dirname, filename: __filename } = import.meta;
-const logger = new Logger({sink:null}); // suppress normal output
+const logger = new Logger({ sink: null }); // suppress normal output
 
 describe('file-pruner', function () {
   const { FilePruner } = MemoAgain;
@@ -17,7 +17,7 @@ describe('file-pruner', function () {
   let TEST_SOUNDS2 = path.join(TEST_DIR, 'data', 'sounds2');
   this.timeout(5 * 1000);
 
-  it('TESTTESTdefault ctor', () => {
+  it('default ctor', () => {
     should.throws(() => {
       // root is required
       let fp = new FilePruner();
@@ -37,14 +37,14 @@ describe('file-pruner', function () {
     let root = TEST_SOUNDS;
     let onPrune = (oldPath) => false;
     let pruneDays = 100;
-    let fp = new FilePruner({ root, pruneDays, onPrune});
+    let fp = new FilePruner({ root, pruneDays, onPrune });
     should(fp.pruneDays).equal(pruneDays);
     should(fp.pruning).equal(0);
     should(fp.onPrune).equal(onPrune);
     should(fp.started).equal(undefined);
     should(fp.done).equal(undefined);
   });
-  it('TESTTESTpruneOldFiles() handles errors ', async () => {
+  it('pruneOldFiles() handles errors ', async () => {
     let root = TEST_SOUNDS2;
     let fp = new FilePruner({ root, logger });
     let promise = fp.pruneOldFiles();
@@ -62,7 +62,7 @@ describe('file-pruner', function () {
     // Subsequent pruning is a different promise
     should(fp.pruneOldFiles()).not.equal(promise);
   });
-  it('TESTTESTpruneOldFiles() ', async () => {
+  it('pruneOldFiles() ', async () => {
     let root = TEST_SOUNDS;
     let dummy1 = path.join(root, 'dummy1'); // pruned
     let dummy2 = path.join(root, 'dummy2'); // not pruned
@@ -118,7 +118,7 @@ describe('file-pruner', function () {
       fs.existsSync(dummy3) && fs.unlinkSync(dummy3);
     }
   });
-  it('TESTTESTpruneOldFiles() custom onPrune', async () => {
+  it('pruneOldFiles() custom onPrune', async () => {
     let root = TEST_SOUNDS;
     let dummy1 = path.join(root, 'dummy1'); // pruned
     let dummy2 = path.join(root, 'dummy2'); // not pruned

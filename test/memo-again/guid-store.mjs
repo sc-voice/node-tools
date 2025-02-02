@@ -7,7 +7,7 @@ import { Text } from '@sc-voice/tools';
 const { MerkleJson } = Text;
 const { dirname: __dirname, filename: __filename } = import.meta;
 
-describe('TESTTESTguid-store', () => {
+describe('guid-store', () => {
   const APP_DIR = path.join(__dirname, '../..');
   const SRC_DIR = path.join(APP_DIR, 'src');
   const FILES_DIR = path.join(APP_DIR, 'test', 'data', 'files');
