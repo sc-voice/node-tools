@@ -11,7 +11,7 @@ import { MemoAgain } from '../../index.mjs';
 const { Files, GuidStore, MemoCache } = MemoAgain;
 let logger = new Logger({ sink: null }); // suppress console for tests
 
-describe('TESTTESTmemo-cache', () => {
+describe('memo-cache', () => {
   const SRC_DIR = path.join(APP_DIR, 'src');
   const FILES_DIR = path.join(APP_DIR, 'test', 'data', 'files');
   const LOCAL_DIR = path.join(APP_DIR, 'local');

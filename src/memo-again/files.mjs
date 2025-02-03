@@ -28,6 +28,24 @@ export class Files {
     }
   }
 
+  static localPath(aPath = __dirname) {
+    const msg = 'f3s.localPath:';
+    let dirParts = aPath.split('/');
+    let iSrc = dirParts.findLastIndex((e) => e == 'src');
+    if (iSrc >= 0) {
+      dirParts = dirParts.slice(0, iSrc);
+    }
+    let iNodeModules = dirParts.findLastIndex(
+      (e) => e == 'node_modules',
+    );
+    if (iNodeModules >= 0) {
+      dirParts = dirParts.slice(0, iNodeModules);
+    }
+    dirParts.push('local');
+    let local = dirParts.join('/');
+    return local;
+  }
+
   static async *files(arg) {
     let opts = typeof arg === 'string' ? { root: arg } : arg || {};
     let root = opts.root || __dirname;

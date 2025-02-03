@@ -33,6 +33,9 @@ describe('memoizer', function () {
 
   it('default ctor', () => {
     let mzr = new Memoizer();
+    should(mzr.storeName).equal('memo');
+    should(mzr.storePath).equal(`${LOCAL}/memo`);
+
     should(mzr.cache).instanceOf(MemoCache);
     should(mzr.cache.writeMem).equal(true);
     should(mzr.cache.writeFile).equal(true);

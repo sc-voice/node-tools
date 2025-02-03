@@ -1,5 +1,6 @@
 import * as deepl from 'deepl-node';
 import { DBG } from '../defines.mjs';
+import { Memoizer } from '../memo-again/memoizer.mjs';
 import { MockDeepL } from './mock-deepl.mjs';
 
 const EMPTY_TEXT = '911911911';
@@ -20,6 +21,7 @@ export class DeepLAdapter {
       glossary,
       glossaryName,
       initialized,
+      memoizer = new Memoizer({storeName:'deepl-memo'}),
       sourceLang, // deepl lang
       targetLang, // deepl lang
       translateOpts,

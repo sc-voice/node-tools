@@ -5,9 +5,10 @@ import should from 'should';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import * as deepl from 'deepl-node';
-import { Translate } from '../../index.mjs';
+import { MemoAgain, Translate } from '../../index.mjs';
 import { DBG } from '../../src/defines.mjs';
 const { DeepLAdapter, QuoteParser } = Translate;
+const { Files } = MemoAgain;
 const {
   LQ1,
   LQ2,
@@ -37,8 +38,8 @@ describe('deepl-adapter', function () {
     DeepLAdapter.setMockApi(!DBG.DEEPL_TEST_API);
   });
 
-  it('TESTTESTcreate() default', async () => {
-    const msg = 'D10r.create() authkey';
+  it('create() default', async () => {
+    const msg = 'td10r.create() default:';
     let eCaught;
     try {
       dla = await DeepLAdapter.create();
@@ -47,8 +48,8 @@ describe('deepl-adapter', function () {
     }
     should(eCaught?.message).match(/authKey\?/);
   });
-  it('TESTTESTcreate() default', async () => {
-    const msg = 'D10r.create';
+  it('create() authKey', async () => {
+    const msg = 'td10r.create-authKey:';
     let authKey = AUTH_KEY;
     let dlt = await DeepLAdapter.create({ authKey });
     should(dlt).properties({
@@ -62,7 +63,7 @@ describe('deepl-adapter', function () {
     });
     should(dlt.authKey).equal(undefined); // hidden
   });
-  it('TESTTESTcreate() custom', async () => {
+  it('create() custom', async () => {
     let authKey = AUTH_KEY;
     let srcLang = 'pt-pt';
     let dstLang = 'de';
@@ -80,8 +81,8 @@ describe('deepl-adapter', function () {
       targetLang: 'de',
     });
   });
-  it('TESTTESTglossaryName()', async () => {
-    const msg = 'TD3l.gloassaryName-de:';
+  it('glossaryName()', async () => {
+    const msg = 'td10r.gloassaryName-de:';
     let srcLang = 'de';
     let dstLang = 'pt-PT';
     let dstAuthor = 'test-author';
@@ -93,8 +94,8 @@ describe('deepl-adapter', function () {
     });
     should(glossaryName).equal('d10r_de_pt_test-author');
   });
-  it('TESTTESTasGlossaryEntries()', async () => {
-    const msg = 'TD3l.asToGlossaryEntries:';
+  it('asGlossaryEntries()', async () => {
+    const msg = 'td10r.asToGlossaryEntries:';
     let kvg = ['einfach | simple', 'bitte | please'].join('\n');
     let entries = {
       einfach: 'simple',
@@ -108,8 +109,8 @@ describe('deepl-adapter', function () {
     let ge = DeepLAdapter.asGlossaryEntries(geObj);
     should.deepEqual(ge, geKvg);
   });
-  it('TESTTESTlistGlossaries()', async () => {
-    const msg = 'td12r.glossaries:';
+  it('listGlossaries()', async () => {
+    const msg = 'td10r.glossaries:';
     let dbg = DBG.DEEPL_TEST_API;
     let authKey = AUTH_KEY;
     let dla = await DeepLAdapter.create({ authKey });
@@ -126,7 +127,7 @@ describe('deepl-adapter', function () {
     should(glossaries).instanceOf(Array);
     dbg && should(glossaries.length).above(-1).below(10);
   });
-  it('TESTTESTtranslate() possessive apostrophe EN', async () => {
+  it('translate() possessive apostrophe EN', async () => {
     let srcLang = 'en';
     let dstLang = 'fr';
     let authKey = AUTH_KEY;
@@ -143,8 +144,8 @@ describe('deepl-adapter', function () {
     should(res[0]).equal("l'origine des agrégats de l'envie");
   });
   /*
-  it("TESTTESTuploadGlossary() EN", async()=>{
-    const msg = "TD3l.uploadGlossary-en:";
+  it("uploadGlossary() EN", async()=>{
+    const msg = "td10r.uploadGlossary-en:";
     let dla = await DeepLAdapter.create({authKey:AUTH_KEY});
     let { translator } = dla;
     let srcLang = 'en';
@@ -159,10 +160,10 @@ describe('deepl-adapter', function () {
       translator,
       translateOpts,
     });
-    should(glossaryName).equal('d10r_en_pt_no-author');
+    should(glossaryName).equal('td10r_en_pt_no-author');
 
     if (DBG.DEEPL_TEST_API) {
-      should(glossary.name).equal('d10r_en_pt_no-author');
+      should(glossary.name).equal('td10r_en_pt_no-author');
       should(glossary.ready).equal(true);
       should(glossary.sourceLang).equal('en');
       should(glossary.targetLang).equal('pt'); // DeepL 
@@ -172,7 +173,7 @@ describe('deepl-adapter', function () {
     }
   });
   it("translate() testcaseQuotes PT", async () => {
-    const msg = "test.DeepLAadapter@87";
+    const msg = "td10r.quotes-pt";
     const dbg = 0;
     //DeepLAdapter.setMockApi(false);
     let srcLang = 'en';
@@ -217,7 +218,7 @@ describe('deepl-adapter', function () {
       '"Bhikkhu, você procura esmola comida antes de comer;');
   });
   it("translate() dark/bright EN>PT", async () => {
-    const msg = 'test.DeepLTranslator@132';
+    const msg = 'td10r.dark-bright-pt';
     let srcLang = 'en';
     let dstLang = 'pt-PT';
     //DeepLAdapter.setMockApi(false);
@@ -251,7 +252,7 @@ describe('deepl-adapter', function () {
       '"Bhikkhu, essa visão é incorrecta;');
   });
   it("translate() testcaseDepthEN FR", async () => {
-    const msg = 'test.DeepLTranslator@167';
+    const msg = 'td10r.depth-en-fr';
     let srcLang = 'en';
     let dstLang = 'fr';
     //DeepLAdapter.setMockApi(false);
@@ -346,7 +347,7 @@ describe('deepl-adapter', function () {
       `Eu digo: "Está a dizer: "Eu disse Reino Unido!"?`);
   })
   it("uploadGlossary() DE", async()=>{
-    const msg = "TD3l.uploadGlossar-de:";
+    const msg = "td10r.uploadGlossary-de:";
     let dla = await DeepLAdapter.create();
     let { translator } = dla;
     let srcLang = 'de';
@@ -428,7 +429,7 @@ describe('deepl-adapter', function () {
     ].join(''));
   })
   it("translate() testcaseEllipsisEN ES", async () => {
-    const msg = "test.DeepLAdapter@297";
+    const msg = "td10r.ellipsis-en-es";
     const dbg = 0;
     let srcLang = 'en';
     let dstLang = 'es';
@@ -451,7 +452,7 @@ describe('deepl-adapter', function () {
     ].join(''));
   })
   it("translate() trailing xml", async () => {
-    const msg = "test.DeepLAdapter@371";
+    const msg = "td10r.trailing-xml";
     let dbg = DBG.DEEPL_XLT;
     dbg && console.log(msg);
     let srcLang = 'en';
@@ -468,7 +469,7 @@ describe('deepl-adapter', function () {
     ]);
   });
   it("translate() trailing xml messenger", async () => {
-    const msg = "test.DeepLAdapter@388";
+    const msg = "td10r.trailing-xml-msg";
     let dbg = DBG.DEEPL_XLT;
     dbg && console.log(msg);
     //DeepLAdapter.setMockApi(false);
@@ -489,7 +490,7 @@ describe('deepl-adapter', function () {
     ]);
   });
   it("translate() trailing xml elderly", async () => {
-    const msg = "test.DeepLAdapter@388";
+    const msg = "td10r.trailing-xml-elderly";
     let dbg = DBG.DEEPL_XLT;
     dbg && console.log(msg);
     //DeepLAdapter.setMockApi(false);

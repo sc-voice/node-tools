@@ -1,25 +1,54 @@
+import path from 'node:path';
 import { Text } from '@sc-voice/tools';
 const { MerkleJson } = Text;
+import { Files } from './files.mjs';
 import { MemoCache } from './memo-cache.mjs';
+
+const DEFAULT_MEMO_CACHE = undefined;
+const DEFAULT_READ_FILE = undefined;
+const DEFAULT_STORE_PATH = undefined;
 
 export class Memoizer {
   constructor(opts = {}) {
-    let { logger = console, context = 'global' } = opts;
-    this.mj = new MerkleJson();
-    this.context = context;
-    this.logger = logger;
-    this.cache =
-      opts.cache ||
-      new MemoCache({
+    let {
+      cache = DEFAULT_MEMO_CACHE,
+      context = 'global',
+      deserialize = MemoCache.deserialize,
+      logger = console,
+      readFile = DEFAULT_READ_FILE,
+      serialize = MemoCache.serialize,
+      storeName = 'memo',
+      storePath = DEFAULT_STORE_PATH,
+      writeFile = true,
+      writeMem = true,
+    } = opts;
+    if (readFile == null) {
+      readFile = writeFile;
+    }
+    if (storePath == null) {
+      storePath = path.join(Files.localPath(), storeName);
+    }
+    if (cache == null) {
+      cache = new MemoCache({
+        deserialize,
         logger,
-        storeName: opts.storeName,
-        storePath: opts.storePath,
-        writeMem: opts.writeMem,
-        writeFile: opts.writeFile,
-        readFile: opts.readFile,
-        serialize: opts.serialize,
-        deserialize: opts.deserialize,
+        readFile,
+        serialize,
+        storeName,
+        storePath,
+        writeFile,
+        writeMem,
       });
+    }
+    let mj = new MerkleJson();
+    Object.assign(this, {
+      cache,
+      context,
+      logger,
+      mj,
+      storeName,
+      storePath,
+    });
   }
 
   volumeOf(method, context) {
