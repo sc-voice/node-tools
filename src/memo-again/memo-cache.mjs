@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { Text } from '@sc-voice/tools';
-const { MerkleJson } = Text;
+const { Logger, MerkleJson } = Text;
 const { dirname: __dirname, filename: __filename } = import.meta;
 import { DBG } from '../defines.mjs';
 import { Files } from './files.mjs';
@@ -10,24 +10,36 @@ import { GuidStore } from './guid-store.mjs';
 export class MemoCache {
   constructor(opts = {}) {
     this.map = {};
-    this.suffix = opts.suffix || '.json';
-    this.logger = opts.logger || console;
-    this.store =
-      opts.store ||
-      new GuidStore({
+    let {
+      deserialize = MemoCache.deserialize,
+      logger = console,
+      readFile,
+      serialize = MemoCache.serialize,
+      store,
+      suffix = '.json',
+      writeFile = true,
+      writeMem = true,
+    } = opts;
+    if (store == null) {
+      store = new GuidStore({
         storeName: opts.storeName || 'memo',
         storePath: opts.storePath,
         suffix: this.suffix,
-        logger: this,
+        logger,
       });
-    this.writeMem = opts.writeMem == null ? true : opts.writeMem;
-    this.writeFile = opts.writeFile == null ? true : opts.writeFile;
-    this.readFile =
-      opts.readFile == null ? this.writeFile : opts.readFile;
-    this.serialize = opts.serialize || MemoCache.serialize;
-    this.deserialize = opts.deserialize || MemoCache.deserialize;
-    this.fileReads = 0;
-    this.fileWrites = 0;
+    }
+    Object.assign(this, {
+      deserialize,
+      fileReads: 0,
+      fileWrites: 0,
+      logger,
+      readFile: readFile == null ? writeFile : readFile,
+      serialize,
+      store,
+      suffix,
+      writeFile,
+      writeMem,
+    });
   }
 
   static serialize(obj) {
@@ -105,14 +117,14 @@ export class MemoCache {
         args,
         value,
       };
-      dbg && logger.log(msg, '[1]writeFile', fpath);
+      dbg && logger.info(msg, '[1]writeFile', fpath);
       if (isPromise) {
         let promise = value;
         value = (async () => {
           let actualValue = await promise;
           cacheValue.value = actualValue;
           let json = this.serialize(cacheValue);
-          logger.log(
+          logger.info(
             msg,
             '[2]put',
             `put(${volume},${guid}) async`,
@@ -128,7 +140,7 @@ export class MemoCache {
         })();
       } else {
         let json = this.serialize(cacheValue);
-        logger.log(
+        logger.info(
           msg,
           '[3]put',
           `put(${volume},${guid}) sync`,
@@ -159,7 +171,7 @@ export class MemoCache {
     const msg = 'm7e.clearVolume:';
     let { logger } = this;
     try {
-      logger.log(msg, '[1]volume', volume);
+      logger.info(msg, '[1]volume', volume);
       delete this.map[volume];
       await this.store.clearVolume(volume);
     } catch (e) {

@@ -51,7 +51,7 @@ export class FilePruner {
       this.bytesPruned = 0;
       this.earliest = Date.now();
       let pruneDate = new Date(Date.now() - pruneDays * MS_DAY);
-      dbg && logger.log(msg, '[1]started', this.started);
+      dbg && logger.info(msg, '[1]started', this.started);
       let pruneOpts = { root, stats: true, absolute: true };
       this.pruning = 1;
       let filesPruned = 0;
@@ -69,7 +69,7 @@ export class FilePruner {
             // qualified delete
             filesPruned++;
             this.filesPruned++;
-            logger.log(msg, '[1]prune', fpath);
+            logger.info(msg, '[1]prune', fpath);
             await fs.promises.unlink(fpath);
             bytesPruned += stats.size;
             this.bytesPruned += stats.size;
@@ -79,7 +79,7 @@ export class FilePruner {
       this.pruning = 0;
       this.done = new Date();
       let elapsed = ((this.done - this.started) / 1000).toFixed(1);
-      logger.log(msg, '[2]done', `${elapsed}s`);
+      logger.info(msg, '[2]done', `${elapsed}s`);
       return {
         started: this.started,
         earliest: this.earliest,
