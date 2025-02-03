@@ -30,15 +30,17 @@ describe('files', () => {
       'file-pruner.mjs',
     ]);
   });
-  it('localPath()', ()=>{
+  it('localPath()', () => {
     const msg = 'tf3s.localPath:';
     should(Files.localPath()).equal(LOCAL_DIR);
-    should(Files.localPath(
-      '/a/b/c/node_modules/@sc-voice/node-tools/src/memo-again/files.mjs'
-    )).equal('/a/b/c/local');
-    should(Files.localPath(
-      '/a/b/c/src/memo-again/files.mjs'
-    )).equal('/a/b/c/local');
+    should(
+      Files.localPath(
+        '/a/b/c/node_modules/@sc-voice/node-tools/src/memo-again/files.mjs',
+      ),
+    ).equal('/a/b/c/local');
+    should(Files.localPath('/a/b/c/src/memo-again/files.mjs')).equal(
+      '/a/b/c/local',
+    );
   });
   it('filesSync(root) => absolute path', () => {
     // absolute path

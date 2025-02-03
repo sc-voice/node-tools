@@ -127,7 +127,7 @@ describe('deepl-adapter', function () {
     should(glossaries).instanceOf(Array);
     dbg && should(glossaries.length).above(-1).below(10);
   });
-  it('translate() possessive apostrophe EN', async () => {
+  it('TESTTESTtranslate() possessive apostrophe EN', async () => {
     let srcLang = 'en';
     let dstLang = 'fr';
     let authKey = AUTH_KEY;
@@ -138,10 +138,34 @@ describe('deepl-adapter', function () {
     });
 
     // sujato
+    let charsTranslated = dla.charsTranslated;
     let res = await dla.translate(["craving aggregates' origin"]);
+    should(dla.charsTranslated - charsTranslated)
+    .equal(26);
 
     // The straight quote can be used for possessive apostrophe
     should(res[0]).equal("l'origine des agrégats de l'envie");
+  });
+  it('TESTTESTmemoize() possessive apostrophe EN', async () => {
+    const msg = 'td10r.memoize:';
+    let srcLang = 'en';
+    let dstLang = 'fr';
+    let authKey = AUTH_KEY;
+    let dla = await DeepLAdapter.create({
+      authKey,
+      srcLang,
+      dstLang,
+    });
+
+    dla.memoize();
+    let res = await dla.translate(["craving aggregates' origin"]);
+    should(res[0]).equal("l'origine des agrégats de l'envie");
+
+    // result should be cached
+    let charsTranslated = dla.charsTranslated;
+    res = await dla.translate(["craving aggregates' origin"]);
+    should(res[0]).equal("l'origine des agrégats de l'envie");
+    should(dla.charsTranslated).equal(charsTranslated);
   });
   /*
   it("uploadGlossary() EN", async()=>{

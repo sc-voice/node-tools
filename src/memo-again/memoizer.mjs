@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { Text } from '@sc-voice/tools';
 const { MerkleJson } = Text;
+import { DBG } from '../defines.mjs';
 import { Files } from './files.mjs';
 import { MemoCache } from './memo-cache.mjs';
 
@@ -61,9 +62,12 @@ export class Memoizer {
   }
 
   memoize(method, context) {
+    const msg = 'm6r.memoize:';
+    const dbg = DBG.M6R_MEMOIZE;
     let { mj, cache } = this;
     let volume = this.volumeOf(method, context);
     let fbody = method.toString();
+    dbg && console.log(msg, { fbody, volume });
     let fmemo = (...args) => {
       let key = {
         volume,

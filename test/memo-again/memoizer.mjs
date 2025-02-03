@@ -77,7 +77,10 @@ describe('memoizer', function () {
     mzr.logLevel = 'info';
 
     // memoize function
-    let f1 = (arg) => `${arg}-41`;
+    // biome-ignore lint:
+    let f1 = function (arg) {
+      return `${arg}-41`;
+    };
     let m1 = mzr.memoize(f1, CONTEXT);
     should(m1('test')).equal('test-41');
     should(m1('test')).equal('test-41');

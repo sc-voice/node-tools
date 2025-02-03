@@ -21,7 +21,6 @@ export class DeepLAdapter {
       glossary,
       glossaryName,
       initialized,
-      memoizer = new Memoizer({storeName:'deepl-memo'}),
       sourceLang, // deepl lang
       targetLang, // deepl lang
       translateOpts,
@@ -54,8 +53,15 @@ export class DeepLAdapter {
     check++;
 
     this.#authKey = authKey;
+    
+    let that = this;
+    Object.defineProperty(this, 'translate', {
+      writable: true,
+      value: texts=>that.translateSlow(texts),
+    });
 
     Object.assign(this, {
+      charsTranslated: 0,
       dstLang,
       dstLang2,
       glossary,
@@ -95,7 +101,7 @@ export class DeepLAdapter {
   }
 
   static glossaryName(opts = {}) {
-    const msg = 'D10r.glossaryName()';
+    const msg = 'd10r.glossaryName()';
     const dbg = DBG.GLOSSARY;
     let { dstAuthor = DST_AUTHOR } = opts;
     let {
@@ -105,14 +111,14 @@ export class DeepLAdapter {
       srcLang,
     } = DeepLAdapter.srcDstLangs(opts);
     let name =
-      `D10r_${srcLang2}_${dstLang2}_${dstAuthor}`.toLowerCase();
+      `d10r_${srcLang2}_${dstLang2}_${dstAuthor}`.toLowerCase();
     dbg && console.log(msg, name);
     return name;
   }
 
   static async create(opts = {}) {
-    const msg = 'D10r.create()';
-    const dbg = DBG.GLOSSARY;
+    const msg = 'd10r.create()';
+    const dbg = DBG.D10R_GLOSSARY;
     let {
       authKey,
       srcLang,
@@ -247,9 +253,8 @@ export class DeepLAdapter {
   }
 
   static async uploadGlossary(opts = {}) {
-    const msg = 'D10r.uploadGlossary()';
+    const msg = 'd10r.uploadGlossary()';
     const dbg = DBG.GLOSSARY;
-    const dbgv = DBG.VERBOSE && dbg;
     let {
       srcLang,
       srcLang2,
@@ -319,16 +324,16 @@ export class DeepLAdapter {
     return glossaries;
   }
 
-  async translate(texts) {
-    const msg = 'D10r.translate()';
+  async translateSlow(texts) {
+    const msg = 'd10r.translate()';
     const dbg = DBG.DEEPL_XLT;
-    const dbgv = dbg && DBG.VERBOSE;
     let { translator, srcLang, dstLang, translateOpts } = this;
 
     let sourceLang = DeepLAdapter.deeplLang(srcLang);
     let targetLang = DeepLAdapter.deeplLang(dstLang);
     texts = texts.map((t) => t || EMPTY_TEXT);
-    dbgv && console.log(msg, '[1]translateOpts', translateOpts);
+    this.charsTranslated += texts.join('').length;
+    dbg>1 && console.log(msg, '[1]translateOpts', translateOpts);
     let results = await translator.translateText(
       texts,
       sourceLang,
@@ -351,5 +356,26 @@ export class DeepLAdapter {
     );
 
     return results;
+  } // translateSlow
+
+  memoize() {
+    const msg = 'd10r.memoize:';
+    const dbg = DBG.D10R_MEMOIZE;
+    let { translator, memoizer, srcLang, dstLang } = this;
+    if (memoizer != null) {
+      console.warn(msg, 'already memoized!')
+      return;
+    }
+    let storeName = 'deepl-memo';
+    memoizer = new Memoizer({storeName});
+    dbg && console.log(msg, storeName);
+    let fTranslate = (texts) => {
+      dbg && console.log(msg, '[1]fTranslate', texts);
+      return this.translateSlow(texts);
+    };
+    this.memoizer = memoizer;
+    let context = `${srcLang}-${dstLang}`;
+    this.translate = memoizer.memoize(fTranslate, context);
   }
+
 } // DeepLAdapter

@@ -428,7 +428,7 @@ describe('Alignment', () => {
       new Vector({ threefr: 1, threepli: 2 }),
     );
   });
-  it('TESTTESTnormalizeVector()', () => {
+  it('normalizeVector()', () => {
     let v = new Vector({ a: 1, b: 2, c: 23 });
     let vnDefault = WordSpace.normalizeVector(v);
     let scale = 1 / 0.618033988749895; // Golden fudge
