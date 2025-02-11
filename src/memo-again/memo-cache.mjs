@@ -117,7 +117,7 @@ export class MemoCache {
         args,
         value,
       };
-      dbg && logger.info(msg, '[1]writeFile', fpath);
+      dbg && logger.log(msg, '[1]writeFile', fpath);
       if (isPromise) {
         let promise = value;
         value = (async () => {
