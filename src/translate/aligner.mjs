@@ -97,7 +97,7 @@ export class DpdTransformer {
 
 export class Aligner {
   constructor(opts = {}) {
-    const msg = 'A5r.ctor:';
+    const msg = 'a4r.ctor:';
     let {
       alignMethod = 'alignPali',
       authorAligned, // author of segment aligned document

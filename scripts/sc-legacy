@@ -332,7 +332,8 @@ async function main() {
       case 'dir': {
         switch (format) {
           case 'ml-doc': {
-            let outFile = `${sutta_uid}-${lang}-${authorAligned}.mld.json`;
+            let outFile = 
+              `${sutta_uid}-${lang}-${authorAligned}.mld.json`;
             let outPath = path.join(outDir||'.', outFile);
             let text = JSON.stringify(output, null, 2);
             console.error(msg, `[2]${outPath}`, text.length);

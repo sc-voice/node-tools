@@ -53,11 +53,9 @@ export class DeepLAdapter {
     check++;
 
     this.#authKey = authKey;
-    
-    let that = this;
     Object.defineProperty(this, 'translate', {
       writable: true,
-      value: texts=>that.translateSlow(texts),
+      value: (texts) => this.translateSlow(texts),
     });
 
     Object.assign(this, {
@@ -333,7 +331,7 @@ export class DeepLAdapter {
     let targetLang = DeepLAdapter.deeplLang(dstLang);
     texts = texts.map((t) => t || EMPTY_TEXT);
     this.charsTranslated += texts.join('').length;
-    dbg>1 && console.log(msg, '[1]translateOpts', translateOpts);
+    dbg > 1 && console.log(msg, '[1]translateOpts', translateOpts);
     let results = await translator.translateText(
       texts,
       sourceLang,
@@ -363,11 +361,11 @@ export class DeepLAdapter {
     const dbg = DBG.D10R_MEMOIZE;
     let { translator, memoizer, srcLang, dstLang } = this;
     if (memoizer != null) {
-      console.warn(msg, 'already memoized!')
+      console.warn(msg, 'already memoized!');
       return;
     }
     let storeName = 'deepl-memo';
-    memoizer = new Memoizer({storeName});
+    memoizer = new Memoizer({ storeName });
     dbg && console.log(msg, storeName);
     let fTranslate = (texts) => {
       dbg && console.log(msg, '[1]fTranslate', texts);
@@ -377,5 +375,4 @@ export class DeepLAdapter {
     let context = `${srcLang}-${dstLang}`;
     this.translate = memoizer.memoize(fTranslate, context);
   }
-
 } // DeepLAdapter

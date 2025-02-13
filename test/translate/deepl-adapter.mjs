@@ -140,8 +140,7 @@ describe('deepl-adapter', function () {
     // sujato
     let charsTranslated = dla.charsTranslated;
     let res = await dla.translate(["craving aggregates' origin"]);
-    should(dla.charsTranslated - charsTranslated)
-    .equal(26);
+    should(dla.charsTranslated - charsTranslated).equal(26);
 
     // The straight quote can be used for possessive apostrophe
     should(res[0]).equal("l'origine des agrégats de l'envie");
