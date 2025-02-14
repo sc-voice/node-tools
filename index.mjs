@@ -13,15 +13,7 @@ export const MemoAgain = {
 
 import { DeepLAdapter } from './src/translate/deepl-adapter.mjs'
 import { QuoteParser } from './src/translate/quote-parser.mjs'
-import { 
-  Aligner, 
-  Alignment, 
-  AlignmentStatus,
-} from './src/translate/aligner.mjs'
 export const Translate = {
-  Aligner,
-  Alignment,
-  AlignmentStatus,
   DeepLAdapter,
   QuoteParser,
 }
